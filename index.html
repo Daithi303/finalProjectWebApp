@@ -1,0 +1,328 @@
+<!doctype html>
+<html>
+    <head>
+       <script src='/socket.io/socket.io.js'></script>
+        <script>
+
+    var previousConnectionState = "";
+    var latestConnectionTime = "9999999999999999";
+     /*////////////////////////////////////////////////////////////////////////////////*/
+        
+            var socket = io();
+            socket.on('welcome', function(data) {
+               // addMessage(data.message);
+
+                // Respond with a message including this clients' id sent from the server
+                socket.emit('i am client', {data: 'foo!', id: data.id});
+            });
+                socket.on('sensorState', function(data) {
+                updateSensorState(data);
+                 socket.emit('latestConnectionTime', {latestConnectionTime: latestConnectionTime});
+            
+            });
+            
+              socket.on('alert', function(data) {
+                 // console.info("Alert recieved: "+data.length);
+                  updateAlerts(data);
+               // console.log("Alerts recieved: "+data.length)
+            
+            });
+            
+            
+            socket.on('error', console.error.bind(console));
+            socket.on('message', console.log.bind(console));
+            
+            function updateAlerts(data){
+                var primaryArray = [];
+                var secondaryArray = [];
+                
+                if(document.getElementById('connectionStateValue').innerHTML=="Disconnected"){
+                    primaryAlertLabel = document.getElementById('primaryAlertLabel').textContent="";
+                    primaryAlertValue = document.getElementById('primaryAlertValue').textContent="";
+                    secondaryAlertLabel = document.getElementById('secondaryAlertLabel').textContent="";
+                    secondaryAlertValue = document.getElementById('secondaryAlertValue').textContent="";   
+                }else{
+                if(data.length==0){
+                    primaryAlertLabel = document.getElementById('primaryAlertLabel').textContent="";
+                    primaryAlertValue = document.getElementById('primaryAlertValue').textContent="";
+                    secondaryAlertLabel = document.getElementById('secondaryAlertLabel').textContent="";
+                    secondaryAlertValue = document.getElementById('secondaryAlertValue').textContent="";
+                }else{
+                    for(var i = 0;i<data.length;i++){
+                        if(data[i].contactType=="Primary"){primaryArray.push(data[i]);}
+                        else if(data[i].contactType=="Secondary"){secondaryArray.push(data[i]);}
+                    }
+                    
+                    if(primaryArray.length==0){
+                        console.log("primaryArray length: 0");
+                    primaryAlertLabel = document.getElementById('primaryAlertLabel').textContent="";
+                    primaryAlertValue = document.getElementById('primaryAlertValue').textContent="";   
+                    }
+                    else{
+                    console.log("primaryArray length: "+primaryArray.length);
+                    primaryAlertLabel = document.getElementById('primaryAlertLabel').textContent="Primary";
+                    primaryAlertValue = document.getElementById('primaryAlertValue').textContent=primaryArray.length;
+                    }
+                    if(secondaryArray.length==0){
+                    console.log("secondaryArray length: 0");
+                    secondaryAlertLabel = document.getElementById('secondaryAlertLabel').textContent="";
+                    secondaryAlertValue = document.getElementById('secondaryAlertValue').textContent="";}
+                    else{
+                    console.log("secondaryArray length: "+secondaryArray.length);
+                    secondaryAlertLabel = document.getElementById('secondaryAlertLabel').textContent="Secondary";
+                    secondaryAlertValue = document.getElementById('secondaryAlertValue').textContent=secondaryArray.length;
+                    }
+                    
+                }
+                }
+                
+            }
+            
+              function updateSensorState(data){
+                  console.info("Hello There");
+                  
+                 if(data.connectionState=="Connected"&& previousConnectionState!="Connected"){
+                 latestConnectionTime==  new Date().getTime();
+                     }
+      
+                 if(data.connectionState=="Disconnected"&& previousConnectionState!="Disconnected"){
+                   latestConnectionTime==  "9999999999999999";
+                     }
+                     
+                 previousConnectionState=data.connectionState;
+                  
+                  
+                if(data.connectionState=="Disconnected"){
+                connectionState = document.getElementById('connectionStateValue').textContent=data.connectionState;
+                connectionState = document.getElementById('connectionStateValue').style.color = "#FF0000";
+                geoLatValue = document.getElementById('geoLatValue').textContent="No Data";
+                geoLongValue = document.getElementById('geoLongValue').textContent="No Data";
+                vehicleSpeedValue = document.getElementById('vehicleSpeedValue').textContent="No Data";
+                rssiStatusValue = document.getElementById('rssiStatusValue').textContent="No Data";
+                rssiStatusValue = document.getElementById('rssiStatusValue').style.color = "#000000";
+                carSeatStatusValue = document.getElementById('carSeatStatusValue').textContent="No Data";
+                carSeatStatusValue = document.getElementById('carSeatStatusValue').style.color = "#000000";
+                primaryAlertValue = document.getElementById('primaryAlertValue').textContent="";
+                primaryAlertLabel = document.getElementById('primaryAlertLabel').textContent="";
+                secondaryAlertValue = document.getElementById('secondaryAlertValue').textContent="";
+                secondaryAlertLabel = document.getElementById('secondaryAlertLabel').textContent="";
+                }
+                
+            if(data.connectionState=="Connected"){
+               connectionState = document.getElementById('connectionStateValue').textContent=data.connectionState;
+               connectionState = document.getElementById('connectionStateValue').style.color = "#00c63b";
+            
+            if(data.rssiStatusValue=="Out Of Proximity"){
+                rssiStatusValue = document.getElementById('rssiStatusValue').textContent=data.rssiStatusValue;
+                rssiStatusValue = document.getElementById('rssiStatusValue').style.color = "#FF0000";
+                }
+                
+            if(data.rssiStatusValue=="In Proximity"){
+               rssiStatusValue =  document.getElementById('rssiStatusValue').textContent=data.rssiStatusValue;
+               rssiStatusValue = document.getElementById('rssiStatusValue').style.color = "#00c63b";
+                }
+                
+            if(data.carSeatStatusValue=="Unoccupied"){
+                carSeatStatusValue = document.getElementById('carSeatStatusValue').textContent=data.carSeatStatusValue;
+                carSeatStatusValue = document.getElementById('carSeatStatusValue').style.color = "#888888";
+                }
+                
+            if(data.carSeatStatusValue=="Occupied"){
+               carSeatStatusValue =  document.getElementById('carSeatStatusValue').textContent=data.carSeatStatusValue;
+               carSeatStatusValue = document.getElementById('carSeatStatusValue').style.color = "#000000";
+                }
+                
+                geoLatValue = document.getElementById('geoLatValue').textContent=data.geoLat;
+                geoLongValue = document.getElementById('geoLongValue').textContent=data.geoLong;
+                vehicleSpeedValue = document.getElementById('vehicleSpeedValue').textContent=data.vehicleSpeedValue;
+            }
+            setMap(data);
+
+            }          
+            
+
+            
+            /////////////////
+            /*
+            function addMessage(message) {
+                var text = document.createTextNode(message),
+                    el = document.createElement('li'),
+                 messages = document.getElementById('messages');
+                  while (messages.firstChild) {
+                   messages.removeChild(messages.firstChild);
+                  }
+                el.appendChild(text);
+                messages.appendChild(el);
+            }
+            */
+
+            
+         /*///////////////////////////////////////////////////////////////////////////////////////////////////////////*/   
+
+        </script>
+
+</head>
+<body>
+    <ul id="messages"></ul>
+
+
+
+    <div style="position: absolute;height: 660px; width: 964px; border: 5px solid #156464;background-image:url('http://i65.tinypic.com/2zs6xba.jpg');no-repeat;
+  background-size: 100%;margin-left: auto;
+margin-right: auto;
+left: 0;
+right: 0;">
+     <h1 style="color: #74adad;padding-left: 30px;">Car Seat Monitor Web Application</h1>
+<div style="position: absolute;
+    top: 125px;
+    left: 37px;">Home</div>
+   
+   <div style="position: absolute;
+    top: 125px;
+    left: 193px;">My devices</div> 
+    
+   <div style="position: absolute;
+    top: 125px;
+    left: 366px;">Device History</div>     
+    
+       <div style="position: absolute;
+    top: 125px;
+    left: 544px;">Remote monitoring requests</div> 
+    
+    <div style="position: absolute;
+    top: 125px;
+    left: 858px;">Alerts</div>  
+    
+        <div id="alertContainer" style="position: absolute;
+    top: 145px;
+    left: 822px;">
+        <div style="position: absolute;
+    top: 0px;
+    left: 0px;font-size: 10px;color: #d6d600">
+            <span id="primaryAlertValue"></span>
+        </div>
+        <div style="position: absolute;
+    top: 0px;
+    left: 10px;font-size: 10px;color: #d6d600">
+         <span id="primaryAlertLabel"></span>   
+        </div>
+        
+            <div style="position: absolute;
+    top: 0px;
+    left: 55px;font-size: 10px;color:#ff0000">
+            <span id="secondaryAlertValue"></span>
+        </div>
+        <div style="position: absolute;
+    top: 0px;
+    left: 65px;font-size: 10px;color: #ff0000">
+         <span id="secondaryAlertLabel"></span>   
+        </div>
+        
+        </div>
+    
+    <div id="map" style="position: absolute;
+    top: 200px;
+    left:500px;width:400px;height:200px"></div>
+    
+        <script>
+                var map;
+              var marker;
+              var myLatLng = {lat: 52.2457484, lng: -7.1409375};
+      function initMap() {
+         
+            var mapOptions = {
+    center: myLatLng,
+    zoom: 14
+  };
+
+  map = new google.maps.Map(document.getElementById('map'),
+      mapOptions);
+             marker = new google.maps.Marker( {position: myLatLng, map: map} );
+      
+      }
+      
+
+      function setMap(data) {
+  if ((document.getElementById('geoLatValue') != 'No Data') && (document.getElementById('geoLongValue') != 'No Data')) {
+    marker.setPosition( new google.maps.LatLng(parseFloat(data.geoLat), parseFloat(data.geoLong)) );
+    map.panTo( new google.maps.LatLng(parseFloat(data.geoLat), parseFloat(data.geoLong)) );
+     marker.setMap(map);
+  }else{
+      marker.setMap(null);
+  }
+}  
+      
+   // google.maps.event.addDomListener(window, 'load', initMap); 
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRkpT3PVBl5BqzMfevevOSMzK1sBTVL_M&callback=initMap"
+    async defer></script>
+    
+    
+    
+    <div id="sensorStateContainer" style="position: absolute;
+    top: 420px;
+    left:500px;width:400px;height:200px">
+        <span id='carSeatStatusLabel' style="position: absolute;
+    top: 5px;
+    left:20px;">Car Seat Status: 
+        </span>
+        <span id='carSeatStatusValue' style="position: absolute;
+    top: 5px;
+    left:145px;">
+        No Data
+    </span>
+    
+    <span id='vehicleSpeedLabel' style="position: absolute;
+    top: 25px;
+    left:20px;">Vehicle Speed: 
+        </span>
+        <span id='vehicleSpeedValue' style="position: absolute;
+    top: 25px;
+    left:145px;">
+        No Data
+    </span>
+    
+    <span id='rssiStatusLabel' style="position: absolute;
+    top: 45px;
+    left:20px;">Proximity Status: 
+        </span>
+        <span id='rssiStatusValue' style="position: absolute;
+    top: 45px;
+    left:145px;">
+        No Data
+    </span>
+    
+    <span id='geoLatLabel' style="position: absolute;
+    top: 65px;
+    left:20px;">Latitude: 
+        </span>
+        <span id='geoLatValue' style="position: absolute;
+    top: 65px;
+    left:145px;">
+        No Data
+    </span>
+    
+    <span id='geoLongLabel' style="position: absolute;
+    top: 85px;
+    left:20px;">Longitute: 
+        </span>
+        <span id='geoLongValue' style="position: absolute;
+    top: 85px;
+    left:145px;">
+        No Data
+    </span>
+    
+    <span id='connectionStateLabel' style="position: absolute;
+    top: 105px;
+    left:20px;">Connection State: 
+        </span>
+        <span id='connectionStateValue' style="position: absolute;
+    top: 105px;
+    left:145px;color: #FF0000">
+        Disconnected
+    </span>
+    
+    </div>
+
+</body>
+</html>

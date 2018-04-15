@@ -1,0 +1,14 @@
+{
+  "name": "car-seat-monitor-web-app",
+  "version": "0.0.1",
+  "description": "Car Seat Monitor Web Aplication",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.15.2",
+    "request": "^2.85.0",
+    "socket.io": "^1.7.3"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

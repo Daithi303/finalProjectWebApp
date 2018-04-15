@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+    <head>
+       <script src='/socket.io/socket.io.js'></script>
+        <script>
+            var socket = io();
+            socket.on('welcome', function(data) {
+                addMessage(data.message);
+
+                // Respond with a message including this clients' id sent from the server
+                socket.emit('i am client', {data: 'foo!', id: data.id});
+            });
+                socket.on('sensorState', function(data) {
+                updateSensorState(data);
+
+            });
+            socket.on('time', function(data) {
+                addMessage(data.time);
+            });
+            socket.on('error', console.error.bind(console));
+            socket.on('message', console.log.bind(console));
+
+            function updateSensorState(data){
+/*
+              var fNameText = document.createTextNode(data.fName);
+              var lNameText = document.createTextNode(data.lName);
+              var emailText = document.createTextNode(data.email);
+         */
+              carSeatStatusValue = document.getElementById('carSeatStatusValue').textContent=data.carSeatStatusValue;
+              vehicleSpeedValue = document.getElementById('vehicleSpeedValue').textContent=data.vehicleSpeedValue;
+              rssiStatusValue = document.getElementById('rssiStatusValue').textContent=data.rssiStatusValue;
+              geoLat = document.getElementById('geoLat').textContent=data.geoLat;
+              geoLong = document.getElementById('geoLong').textContent=data.geoLong;
+              connectionState = document.getElementById('connectionState').textContent=data.connectionState;
+            }
+
+            function addMessage(message) {
+                var text = document.createTextNode(message),
+                    el = document.createElement('li'),
+                 messages = document.getElementById('messages');
+                  while (messages.firstChild) {
+                   messages.removeChild(messages.firstChild);
+                  }
+                el.appendChild(text);
+                messages.appendChild(el);
+            }
+        </script>
+</head>
+<body>
+    <script>
+function myMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(51.5, -0.12),
+        zoom: 10,
+        mapTypeId: google.maps.MapTypeId.HYBRID
+    }
+var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+    <div style="position: absolute;height: 660px; width: 964px; border: 5px solid #156464; background-image:url('background.jpg');no-repeat;
+  background-size: 100%;margin-left: auto;
+margin-right: auto;
+left: 0;
+right: 0;">
+     <h1 style="color: #74adad;padding-left: 30px;">Car Seat Monitor Web Application</h1>
+<div style="position: absolute;
+    top: 125px;
+    left: 37px;">Home</div>
+   
+   <div style="position: absolute;
+    top: 125px;
+    left: 193px;">My devices</div> 
+    
+   <div style="position: absolute;
+    top: 125px;
+    left: 366px;">Device History</div>     
+    
+       <div style="position: absolute;
+    top: 125px;
+    left: 544px;">Remote monitoring requests</div> 
+    
+    <div style="position: absolute;
+    top: 125px;
+    left: 858px;">Alerts</div>  
+    
+        <div id="alertContainer" style="position: absolute;
+    top: 145px;
+    left: 822px;">
+        <div style="position: absolute;
+    top: 0px;
+    left: 0px;font-size: 10px;color: #ff8533">
+            <span id="primaryAlertValue">0</span>
+        </div>
+        <div style="position: absolute;
+    top: 0px;
+    left: 10px;font-size: 10px;color: #ff8533">
+         <span id="primaryAlertLabel">Primary</span>   
+        </div>
+        
+            <div style="position: absolute;
+    top: 0px;
+    left: 55px;font-size: 10px;color:#ff0000">
+            <span id="primaryAlertValue">0</span>
+        </div>
+        <div style="position: absolute;
+    top: 0px;
+    left: 65px;font-size: 10px;color: #ff0000">
+         <span id="primaryAlertLabel">Secondary</span>   
+        </div>
+        
+        </div>
+    
+    <div id="mapContainer" style="position: absolute;
+    top: 200px;
+    left:500px;width:400px;height:200px"></div>
+    
+    <div id="sensorStateContainer" style="position: absolute;
+    top: 420px;
+    left:500px;width:400px;height:200px">
+        <div id='carSeatStatusLabel' style="position: absolute;
+    top: 5px;
+    left:20px;">Car Seat Status: 
+        </div>
+        <div id='carSeatStatusValue' style="position: absolute;
+    top: 5px;
+    left:145px;">
+        No Data
+    </div>
+    
+    <div id='vehicleSpeedLabel' style="position: absolute;
+    top: 25px;
+    left:20px;">Vehicle Speed: 
+        </div>
+        <div id='vehicleSpeedValue' style="position: absolute;
+    top: 25px;
+    left:145px;">
+        No Data
+    </div>
+    
+    <div id='rssiStatusLabel' style="position: absolute;
+    top: 45px;
+    left:20px;">Proximity Status: 
+        </div>
+        <div id='rssiStatusValue' style="position: absolute;
+    top: 45px;
+    left:145px;">
+        No Data
+    </div>
+    
+    <div id='geoLatLabel' style="position: absolute;
+    top: 65px;
+    left:20px;">Latitude: 
+        </div>
+        <div id='geoLatValue' style="position: absolute;
+    top: 65px;
+    left:145px;">
+        No Data
+    </div>
+    
+    <div id='geoLongLabel' style="position: absolute;
+    top: 85px;
+    left:20px;">Longitute: 
+        </div>
+        <div id='geoLongValue' style="position: absolute;
+    top: 85px;
+    left:145px;">
+        No Data
+    </div>
+    
+    <div id='connectionStateLabel' style="position: absolute;
+    top: 105px;
+    left:20px;">Connection State: 
+        </div>
+        <div id='connectionStateValue' style="position: absolute;
+    top: 105px;
+    left:145px;">
+        No Data
+    </div>
+    
+    </div>
+    
+
+    
+    
+
+</body>
+</html>
