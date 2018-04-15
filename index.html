@@ -106,9 +106,11 @@
                 primaryAlertLabel = document.getElementById('primaryAlertLabel').textContent="";
                 secondaryAlertValue = document.getElementById('secondaryAlertValue').textContent="";
                 secondaryAlertLabel = document.getElementById('secondaryAlertLabel').textContent="";
+               
                 }
                 
             if(data.connectionState=="Connected"){
+            
                connectionState = document.getElementById('connectionStateValue').textContent=data.connectionState;
                connectionState = document.getElementById('connectionStateValue').style.color = "#00c63b";
             
@@ -135,6 +137,7 @@
                 geoLatValue = document.getElementById('geoLatValue').textContent=data.geoLat;
                 geoLongValue = document.getElementById('geoLongValue').textContent=data.geoLong;
                 vehicleSpeedValue = document.getElementById('vehicleSpeedValue').textContent=data.vehicleSpeedValue;
+                
             }
             setMap(data);
 
@@ -195,30 +198,190 @@ right: 0;">
     
         <div id="alertContainer" style="position: absolute;
     top: 145px;
-    left: 822px;">
+    left: 820px;">
         <div style="position: absolute;
     top: 0px;
-    left: 0px;font-size: 10px;color: #d6d600">
+    left: 0px;font-size: 14px;color: #ff5d00">
             <span id="primaryAlertValue"></span>
         </div>
         <div style="position: absolute;
-    top: 0px;
-    left: 10px;font-size: 10px;color: #d6d600">
+    top: 3px;
+    left: 10px;font-size: 11px;color: #ff5d00">
          <span id="primaryAlertLabel"></span>   
         </div>
         
             <div style="position: absolute;
     top: 0px;
-    left: 55px;font-size: 10px;color:#ff0000">
+    left: 55px;font-size: 14px;color:#bc0000">
             <span id="secondaryAlertValue"></span>
         </div>
         <div style="position: absolute;
-    top: 0px;
-    left: 65px;font-size: 10px;color: #ff0000">
+    top: 3px;
+    left: 65px;font-size: 11px;color: #bc0000">
          <span id="secondaryAlertLabel"></span>   
         </div>
         
+        
         </div>
+   
+   
+       <div style="position: absolute;
+    top: 190px;
+    left: 20px;font-weight: 900;">Devices owned by you</div> 
+    
+           <div style="position: absolute;
+    top: 448px;
+    left: 20px;font-weight: 900;">Remotely Monitored</div> 
+   
+              <div style="position: absolute;
+    top: 225px;
+    left: 30px;">Device 1</div> 
+    
+    
+     <div style="position: absolute;
+    top: 267px;
+    left: 30px;">Device 2</div> 
+    
+     <div style="position: absolute;
+    top: 310px;
+    left: 30px;">Device 3</div> 
+    
+         <div style="position: absolute;
+    top: 352px;
+    left: 30px;">Device 4</div> 
+    
+      <div style="position: absolute;
+    top: 394px;
+    left: 30px;">Device 5</div> 
+    
+    
+    <div style="position: absolute;
+    top: 224px;
+    left: 333px;">Edit</div> 
+    
+    
+     <div style="position: absolute;
+    top: 267px;
+    left: 333px;">Edit</div> 
+    
+     <div style="position: absolute;
+    top: 310px;
+   left: 333px;">Edit</div> 
+    
+         <div style="position: absolute;
+    top: 352px;
+   left: 333px;">Edit</div> 
+    
+    
+  <div style="position: absolute;
+    top: 394px;
+    left: 333px;">Edit</div> 
+    
+    
+    
+        <div style="position: absolute;
+    top: 226px;font-size:11px;
+    left: 398px;">Delete</div> 
+    
+    
+     <div style="position: absolute;
+    top: 269px;font-size:11px;
+   left: 398px;">Delete</div> 
+    
+     <div style="position: absolute;
+    top: 311px;font-size:11px;
+  left: 398px;">Delete</div> 
+    
+         <div style="position: absolute;
+    top: 354px;font-size:11px;
+left: 398px;">Delete</div>   
+    
+    
+  <div style="position: absolute;
+    top: 394px;font-size:11px;
+left: 398px;">Delete</div>  
+    
+    
+     <div style="position: absolute;
+    top: 480px;
+left: 168px;">Owned by: User 1</div>  
+
+     <div style="position: absolute;
+    top: 523px;
+left: 168px;">Owned by: User 2</div>  
+    
+     <div style="position: absolute;
+    top: 565px;
+left: 168px;">Owned by: User 3</div>  
+    
+         <div style="position: absolute;
+    top: 607px;
+left: 168px;">Owned by: User 4</div>  
+     
+    
+    
+     <div style="position: absolute;
+    top: 480px;
+    left: 30px;">Device 1</div> 
+    
+    
+     <div style="position: absolute;
+    top: 523px;
+    left: 30px;">Device 2</div> 
+    
+     <div style="position: absolute;
+    top: 565px;
+    left: 30px;">Device 3</div> 
+    
+         <div style="position: absolute;
+    top: 607px;
+    left: 30px;">Device 4</div> 
+    
+    
+     <div style="position: absolute;
+    top: 480px;color: red;
+    left: 350px;">Idle</div> 
+    
+    
+     <div style="position: absolute;
+    top: 523px;color: red;
+      left: 350px;">Idle</div> 
+    
+     <div style="position: absolute;
+    top: 565px;color: green;
+    left: 300px;">Journey in progress</div> 
+    
+         <div style="position: absolute;
+    top: 607px;color: red;
+   left: 350px;">Idle</div>  
+    
+    
+    
+    
+         <div style="position: absolute;
+    top: 225px;color: green;
+    left: 140px;">Journey in progress</div> 
+    
+     <div style="position: absolute;
+    top: 267px;color:red;
+    left: 190px;">Idle</div> 
+    
+     <div style="position: absolute;
+    top: 310px;color:red;
+     left: 190px;">Idle</div> 
+    
+         <div style="position: absolute;
+    top: 352px;color:red;
+     left: 190px;">Idle</div> 
+    
+      <div style="position: absolute;
+    top: 394px;color:red;
+     left: 190px;">Idle</div> 
+    
+    
+    
+    
+    
     
     <div id="map" style="position: absolute;
     top: 200px;
@@ -242,13 +405,15 @@ right: 0;">
       }
       
 
+
       function setMap(data) {
-  if ((document.getElementById('geoLatValue') != 'No Data') && (document.getElementById('geoLongValue') != 'No Data')) {
+  if ((document.getElementById('geoLatValue').textContent != 'No Data') && (document.getElementById('geoLongValue').textContent  != 'No Data')) {
     marker.setPosition( new google.maps.LatLng(parseFloat(data.geoLat), parseFloat(data.geoLong)) );
     map.panTo( new google.maps.LatLng(parseFloat(data.geoLat), parseFloat(data.geoLong)) );
      marker.setMap(map);
   }else{
       marker.setMap(null);
+   
   }
 }  
       
