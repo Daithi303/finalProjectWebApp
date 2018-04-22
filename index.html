@@ -3,16 +3,19 @@
     <head>
        <script src='/socket.io/socket.io.js'></script>
         <script>
+/*
+The code relating to socket.io events was based on code sourced from 2 different sites:
+
+https://socket.io/get-started/chat
+
+https://stackoverflow.com/questions/9914816/what-is-an-example-of-the-simplest-possible-socket-io-example
+*/
 
     var previousConnectionState = "";
     var latestConnectionTime = "9999999999999999";
-     /*////////////////////////////////////////////////////////////////////////////////*/
         
             var socket = io();
             socket.on('welcome', function(data) {
-               // addMessage(data.message);
-
-                // Respond with a message including this clients' id sent from the server
                 socket.emit('i am client', {data: 'foo!', id: data.id});
             });
                 socket.on('sensorState', function(data) {
@@ -22,10 +25,7 @@
             });
             
               socket.on('alert', function(data) {
-                 // console.info("Alert recieved: "+data.length);
                   updateAlerts(data);
-               // console.log("Alerts recieved: "+data.length)
-            
             });
             
             
@@ -144,24 +144,6 @@
             }          
             
 
-            
-            /////////////////
-            /*
-            function addMessage(message) {
-                var text = document.createTextNode(message),
-                    el = document.createElement('li'),
-                 messages = document.getElementById('messages');
-                  while (messages.firstChild) {
-                   messages.removeChild(messages.firstChild);
-                  }
-                el.appendChild(text);
-                messages.appendChild(el);
-            }
-            */
-
-            
-         /*///////////////////////////////////////////////////////////////////////////////////////////////////////////*/   
-
         </script>
 
 </head>
@@ -205,7 +187,7 @@ right: 0;">
             <span id="primaryAlertValue"></span>
         </div>
         <div style="position: absolute;
-    top: 3px;
+    top: 1px;
     left: 10px;font-size: 11px;color: #ff5d00">
          <span id="primaryAlertLabel"></span>   
         </div>
@@ -216,7 +198,7 @@ right: 0;">
             <span id="secondaryAlertValue"></span>
         </div>
         <div style="position: absolute;
-    top: 3px;
+    top: 1px;
     left: 65px;font-size: 11px;color: #bc0000">
          <span id="secondaryAlertLabel"></span>   
         </div>
@@ -380,14 +362,15 @@ left: 168px;">Owned by: User 4</div>
     
     
     
-    
-    
-    
     <div id="map" style="position: absolute;
     top: 200px;
     left:500px;width:400px;height:200px"></div>
     
         <script>
+        /*
+        The code for embedding google maps into the web page was sourced from the Google Map API web page:
+        https://developers.google.com/maps/documentation/javascript/tutorial
+        */
                 var map;
               var marker;
               var myLatLng = {lat: 52.2457484, lng: -7.1409375};
@@ -417,7 +400,6 @@ left: 168px;">Owned by: User 4</div>
   }
 }  
       
-   // google.maps.event.addDomListener(window, 'load', initMap); 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRkpT3PVBl5BqzMfevevOSMzK1sBTVL_M&callback=initMap"
     async defer></script>

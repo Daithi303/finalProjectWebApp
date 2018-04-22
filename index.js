@@ -1,18 +1,21 @@
 const https = require("https");
+/*
+The code relating to socket.io events was based on code sourced from 2 different sites:
+
+https://socket.io/get-started/chat
+
+https://stackoverflow.com/questions/9914816/what-is-an-example-of-the-simplest-possible-socket-io-example
+*/
 var http = require('http'),
     fs = require('fs'),
-    // NEVER use a Sync function except at start-up!
     index = fs.readFileSync(__dirname + '/index.html');
 
-// Send index.html to all requests
 var app = http.createServer(function(req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.end(index);
 });
 var latestConnectionTime = "9999999999999999";
 
-
-// Socket.io server listens to our app
 var io = require('socket.io').listen(app);
 
 function getDevice(){
@@ -33,13 +36,8 @@ https.get(options, res => {
     body += data;
   });
   res.on("end", () => {
-    //console.log(body);
    
     body = JSON.parse(body);
-    ///////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////
-
     var obj = {carSeatStatusValue: body[0].carSeatStatusValue,
     vehicleSpeedValue: body[0].vehicleSpeedValue,
     rssiStatusValue: body[0].rssiStatusValue,
@@ -49,17 +47,7 @@ https.get(options, res => {
     };
     
     io.emit('sensorState', obj);
-   /* console.log(
-      `carSeatStatusValue: ${body[0].carSeatStatusValue} -`,
-      `vehicleSpeedValue: ${body[0].vehicleSpeedValue} -`,
-      `rssiStatusValue: ${body[0].rssiStatusValue}`,
-      `geoLat: ${body[0].geoLat} -`,
-      `geoLong: ${body[0].geoLong}`,
-      `connectionState: ${body[0].connectionState}`
-      
-    );
-    
-  */
+
 }
   );
 });
@@ -95,9 +83,7 @@ https.get(options, res => {
 
 
 io.on('connection', function(socket) {
-    // Use socket to communicate with this particular client only, sending it it's own id
    socket.emit('welcome', { message: 'Welcome!', id: socket.id });
-
     socket.on('i am client', console.log);
 
 });
